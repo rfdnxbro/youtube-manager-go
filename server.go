@@ -2,15 +2,25 @@ package main
 
 import (
 	"github.com/labstack/echo"
-	"github.com/rfdnxbro/youtube-manager-go/routes"
+	"github.com/labstack/echo/middleware"
+	"youtube-manager-go/routes"
+  "github.com/sirupsen/logrus"
 )
+
+func init() {
+  logrus.SetLevel(logrus.DebugLevel)
+  logrus.SetFormatter(&logrus.JSONFormatter{})
+}
 
 func main() {
 	e := echo.New()
 
-  // Routes
-  routes.Init(e)
+	// Middlewares
+	e.Use(middleware.Logger())
 
-  // Start server
+	// Routes
+	routes.Init(e)
+
+	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
 }
